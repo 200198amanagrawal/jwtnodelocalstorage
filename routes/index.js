@@ -6,8 +6,13 @@ var router = express.Router();
 var path=require('path');
 var employee=empModel.find({});
 var imageData=uploadModel.find({});
-router.use(express.static(__dirname+"./public/"));
+var jwt= require('jsonwebtoken');
 
+router.use(express.static(__dirname+"./public/"));
+if (typeof localStorage === "undefined" || localStorage === null) {
+  var LocalStorage = require('node-localstorage').LocalStorage;
+  localStorage = new LocalStorage('./scratch');
+}
 
 
 var Storage=multer.diskStorage({//the imp method which is used to store the file to that location.
@@ -62,6 +67,14 @@ router.get('/', function(req, res, next) {
   })
 });//just a simple select data from the db
 
+router.get('/login', function(req, res, next) {
+  res.send("Login successfully");
+});
+
+
+router.get('/logout', function(req, res, next) {
+  res.send("Logout successfully");
+});
 
 
 router.post('/', function(req, res, next) {//just a simple insert data from db
