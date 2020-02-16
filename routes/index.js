@@ -51,12 +51,14 @@ router.post('/upload',upload, function(req, res, next) {
 
 function checklogin(req,res,next)
 {
+  var myToken=localStorage.getItem('myToken');
   try {
     jwt.verify(myToken, 'loginToken');// will check from get of login that myToken of value loginToken exists or not.
   } catch(err) {
     // err
     res.send("You require login access");
   }
+  next();
 }
 
 
