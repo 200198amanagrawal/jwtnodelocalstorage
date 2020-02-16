@@ -10,6 +10,49 @@
     
   </head>
   <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+        <form action="/search/" id="EmployeeForm" class="form-horizontal" method="post"  role="form">
+            
+            <div class="col-md-3">
+            <div class="form-group">
+                <label for="name" class="col-md-12 control-label">By Name</label>
+                <div class="col-md-12">
+                    <input type="text" class="form-control" name="fltrname" placeholder="Enter Your Name">
+                </div>
+            </div>
+            </div>
+            <div class="col-md-3">
+            <div class="form-group">
+                <label for="email" class="col-md-12 control-label">By Email</label>
+                <div class="col-md-12">
+                    <input type="text" class="form-control" name="fltremail" placeholder="Email Address">
+                </div>
+            </div>
+                </div>
+                <div class="col-md-3">
+            <div class="form-group">
+                <label for="email" class="col-md-12 control-label">Employee Type</label>
+                <div class="col-md-12">
+                  <select class="form-control" name="fltremptype">
+                          <option value="Hourly">Hourly</option>
+                          <option value="Fixed">Fixed</option>
+                  </select>
+                  </div>
+                  <div class="col-md-3">
+            <div class="form-group">
+                <!-- Button -->                                        
+                <div class="col-md-12">
+                  <input type="submit" name="submit" value="submit" class="form control btn btn-primary">   
+                </div>
+            </div>
+            </div>
+        </div>
+        </form>
+        </div>
+      </div>
+        </div>
     <h1><%= title %></h1>
     <table class="table">
       <thead>
@@ -37,8 +80,7 @@
               <div class="panel panel-info">
                   <div class="panel-heading">
                       <div class="panel-title">Employee Details Form</div>
-                      <p>
-                        </p>
+                      
                        </div>  
                   <div class="panel-body" >
                       <form action="/" id="EmployeeForm" class="form-horizontal" method="post"  role="form">
@@ -92,6 +134,13 @@
                               <input type="submit" name="submit" value="submit" class="btn btn-primary">   
                               </div>
                           </div>
-              
+                          
+                          
+                          
+                          
+                          
+                      </form>
+                   </div>
+              </div>          
   </body>
 </html>
