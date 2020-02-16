@@ -1,8 +1,45 @@
 var express = require('express');
 var empModel=require('../modules/employee');
+var multer=require('multer');
 var router = express.Router();
+var path=require('path');
 var employee=empModel.find({});
+
+router.use(express.static(__dirname+"./public/"));
+
+
+
+var Storage=multer.diskStorage({//the imp method which is used to store the file to that location.
+    destination:"./public/uploads/",
+    filename:(req,file,cb)=>{
+      //cb=>callby
+        cb(null,file.fieldname+"_"+Date.now()+path.extname(file.originalname));
+    }
+});
+
+var upload=multer(//here upload is the middleware which would be used in the below post method
+  {
+    storage:Storage
+}).single('file');//the single file is uploaded thats why we are using single.
+
+
+router.post('/upload',upload, function(req, res, next) {
+  var success=req.file.filename+"uploaded successfully";
+  res.render('uploadfile', { title: 'Upload the file',success:success });
+});
+
+ 
+
+
 /* GET home page. */
+
+
+
+router.get('/upload', function(req, res, next) {
+  res.render('uploadfile', { title: 'Upload the file',success:"" });
+});
+
+
 router.get('/', function(req, res, next) {
   employee.exec(function(err,data)
   {
