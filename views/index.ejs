@@ -3,6 +3,7 @@
   <head>
     <title><%=title %></title>
       <link rel="stylesheet" href="/stylesheets/style.css"/>
+      <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -62,6 +63,7 @@
           <th>Emp type</th>
           <th>Hours</th>
           <th>Amt</th>
+          <th>Action</th>
           </tr>
           <% if(records.length>0){%>
           <% records.forEach(function(row){%>
@@ -71,9 +73,11 @@
             <td><%= row.etype %></td>
             <td><%= row.totalhous %></td>
             <td><%= row.hourlyrate %></td>
+            <td><a class="btn btn-primary" href="/edit/<%= row._id %>"><i class="fa fa-edit"></i>
+              <a class="btn btn-danger" href="/delete/<%= row._id %>"><i class="fa fa-trash"></i></td>
           </tr>
           <% })}else{ %>
-            <td colspan=6>No records found</td>
+            <td colspan="6">No records found</td>
             <% } %>
       </thead>
     </table>

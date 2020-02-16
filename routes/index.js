@@ -9,11 +9,11 @@ router.get('/', function(req, res, next) {
     if(err) throw err;
   res.render('index', { title: 'Employee Records',records:data });
   })
-});
+});//just a simple select data from the db
 
 
 
-router.post('/', function(req, res, next) {
+router.post('/', function(req, res, next) {//just a simple insert data from db
   var empDetails=new empModel(
     {
       name:req.body.uname,
@@ -31,8 +31,10 @@ router.post('/', function(req, res, next) {
       if(err) throw err;
     res.render('index', { title: 'Employee Records',records:data });
   })
- });//inserting the data
+ });
 });
+
+//filtering the data on the basis on filter selected
 router.post('/search/', function(req, res, next) {
 var filtername=req.body.fltrname;
 var filteremail=req.body.fltremail;
@@ -65,4 +67,46 @@ employeeFilter.exec(function(err,data)
     res.render('index', { title: 'Employee Records',records:data });
   });
 });
+
+//deleting the records
+router.get('/delete/:id', function(req, res, next) 
+{
+  var id=req.params.id;
+  var del=empModel.findByIdAndDelete(id);
+  del.exec(function(err)
+  {
+    if(err) throw err;
+    res.redirect("/");
+  });
+});
+
+
+//updating the records
+router.get('/edit/:id', function(req, res, next) 
+{
+  var id=req.params.id;
+  var edit=empModel.findById(id);
+  edit.exec(function(err,data)
+  {
+    if(err) throw err;
+    res.render('edit', { title: 'Edit Employee Records',records:data });
+  });
+});
+
+router.post('/update/', function(req, res, next) {//just a simple insert data from db using the edit functionality
+  var update=empModel.findByIdAndUpdate(req.body.id,{
+    name:req.body.uname,
+    email:req.body.email,
+    etype:req.body.emptype,
+    hourlyrate:req.body.hrlyrate,
+    totalhous:req.body.ttlhr,
+  });
+
+   update.exec(function(err,data)
+    {
+      if(err) throw err;
+    res.redirect("/");
+  });
+});
+
 module.exports = router;
