@@ -6,10 +6,10 @@ var router = express.Router();
 var path=require('path');
 var employee=empModel.find({});
 var imageData=uploadModel.find({});
-var jwt= require('jsonwebtoken');
-
+var jwt= require('jsonwebtoken');//using for stateless authentication
 router.use(express.static(__dirname+"./public/"));
-if (typeof localStorage === "undefined" || localStorage === null) {
+
+if (typeof localStorage === "undefined" || localStorage === null) { //using for stateless authentication
   var LocalStorage = require('node-localstorage').LocalStorage;
   localStorage = new LocalStorage('./scratch');
 }
@@ -46,9 +46,18 @@ router.post('/upload',upload, function(req, res, next) {
 
  
 
-
 /* GET home page. */
 
+
+function checklogin(req,res,next)
+{
+  try {
+    jwt.verify(myToken, 'loginToken');// will check from get of login that myToken of value loginToken exists or not.
+  } catch(err) {
+    // err
+    res.send("You require login access");
+  }
+}
 
 
 router.get('/upload', function(req, res, next) {
@@ -59,7 +68,7 @@ router.get('/upload', function(req, res, next) {
 });
 
 
-router.get('/', function(req, res, next) {
+router.get('/',checklogin, function(req, res, next) {
   employee.exec(function(err,data)
   {
     if(err) throw err;
@@ -67,12 +76,17 @@ router.get('/', function(req, res, next) {
   })
 });//just a simple select data from the db
 
-router.get('/login', function(req, res, next) {
+
+
+router.get('/login',function(req, res, next) {//login functionality will pass to main page if it follows and requires a middleware which we are dveleoping as checklogin()
+  var token=jwt.sign({foo:'bar'},'loginToken');
+  localStorage.setItem('myToken',token);
   res.send("Login successfully");
 });
 
 
 router.get('/logout', function(req, res, next) {
+  localStorage.removeItem('myToken');
   res.send("Logout successfully");
 });
 
