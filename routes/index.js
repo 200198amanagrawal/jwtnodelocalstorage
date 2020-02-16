@@ -1,10 +1,11 @@
 var express = require('express');
 var empModel=require('../modules/employee');
+var uploadModel=require('../modules/upload');
 var multer=require('multer');
 var router = express.Router();
 var path=require('path');
 var employee=empModel.find({});
-
+var imageData=uploadModel.find({});
 router.use(express.static(__dirname+"./public/"));
 
 
@@ -24,8 +25,18 @@ var upload=multer(//here upload is the middleware which would be used in the bel
 
 
 router.post('/upload',upload, function(req, res, next) {
+  var imageFile=req.file.filename;
   var success=req.file.filename+"uploaded successfully";
-  res.render('uploadfile', { title: 'Upload the file',success:success });
+  var imageDetails=new uploadModel({
+    imagename:imageFile
+  });
+  imageDetails.save(function(err,doc){
+    if(err) throw err;
+    imageData.exec(function(err,data){
+    if(err) throw err;
+    res.render('uploadfile', { title: 'Upload the file',records:data,success:success });
+  })
+  });
 });
 
  
@@ -36,7 +47,10 @@ router.post('/upload',upload, function(req, res, next) {
 
 
 router.get('/upload', function(req, res, next) {
-  res.render('uploadfile', { title: 'Upload the file',success:"" });
+  imageData.exec(function(err,data){
+    if(err) throw err;
+    res.render('uploadfile', { title: 'Upload the file',records:data,success:success });
+  })
 });
 
 
