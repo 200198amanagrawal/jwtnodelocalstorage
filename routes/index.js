@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
   employee.exec(function(err,data)
   {
     if(err) throw err;
-  res.render('index', { title: 'Employee Records',records:data });
+  res.render('index', { title: 'Employee Records',records:data,success:"" });
   })
 });//just a simple select data from the db
 
@@ -29,7 +29,7 @@ router.post('/', function(req, res, next) {//just a simple insert data from db
    employee.exec(function(err,data)
     {
       if(err) throw err;
-    res.render('index', { title: 'Employee Records',records:data });
+    res.render('index', { title: 'Employee Records',records:data,success:"Records added successfully" });
   })
  });
 });
@@ -64,7 +64,7 @@ var employeeFilter=empModel.find(filterParameter);
 employeeFilter.exec(function(err,data)
 {
       if(err) throw err;
-    res.render('index', { title: 'Employee Records',records:data });
+    res.render('index', { title: 'Employee Records',records:data,success:"Records filtered successfully" });
   });
 });
 
@@ -73,10 +73,14 @@ router.get('/delete/:id', function(req, res, next)
 {
   var id=req.params.id;
   var del=empModel.findByIdAndDelete(id);
-  del.exec(function(err)
+  del.exec(function(err,data)
   {
     if(err) throw err;
-    res.redirect("/");
+    employee.exec(function(err,data)
+    {
+      if(err) throw err;
+    res.render('index', { title: 'Employee Records',records:data,success:"Records deleted successfully" });
+  });
   });
 });
 
@@ -105,7 +109,11 @@ router.post('/update/', function(req, res, next) {//just a simple insert data fr
    update.exec(function(err,data)
     {
       if(err) throw err;
-    res.redirect("/");
+      employee.exec(function(err,data)
+    {
+      if(err) throw err;
+    res.render('index', { title: 'Employee Records',records:data,success:"Records updated successfully" });
+  });
   });
 });
 
